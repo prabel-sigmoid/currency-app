@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currency-frontend
+  template:
+    metadata:
+      labels:
+        app: currency-frontend
+    spec:
+      containers:
+        - name: currency-frontend
+          image: {{ .Values.frontend.image }}
+          ports:
+            - containerPort: {{ .Values.frontend.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: NodePort
+  selector:
+    app: currency-frontend
+  ports:
+    - port: {{ .Values.frontend.port }}
+      targetPort: {{ .Values.frontend.port }}
+      nodePort: {{ .Values.frontend.nodePort }}

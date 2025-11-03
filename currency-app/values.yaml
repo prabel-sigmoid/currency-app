@@ -1,0 +1,20 @@
+postgres:
+  image: postgres:15
+  dbName: currency_db
+  user: postgres
+  password: admin
+  storage: 1Gi
+  port: 5432
+
+backend:
+  image: prabel1/currency-be:latest
+  port: 8000
+
+frontend:
+  image: prabel1/currency-front:latest
+  port: 5173
+  nodePort: 30173
+
+ingress:
+  enabled: true
+  host: currency.local

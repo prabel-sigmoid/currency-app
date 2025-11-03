@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currency-backend
+  template:
+    metadata:
+      labels:
+        app: currency-backend
+    spec:
+      containers:
+        - name: currency-backend
+          image: prabel1/currency-be:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://postgres:admin@postgres-service:5432/currencydb"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: currency-backend
+  ports:
+    - port: 8000
+      targetPort: 8000

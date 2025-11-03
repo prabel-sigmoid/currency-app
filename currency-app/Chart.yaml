@@ -1,0 +1,6 @@
+apiVersion: v2
+name: currency-app
+description: A Helm chart for currency application
+type: application
+version: 1.0.0
+appVersion: "1.0"
