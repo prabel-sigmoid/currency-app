@@ -38,8 +38,8 @@ jobs:
 
       - name: Build Backend Image
         run: |
-          docker build -t gcr.io/$PROJECT_ID/f1-backend:$GITHUB_SHA ./be
-          docker tag gcr.io/$PROJECT_ID/f1-backend:$GITHUB_SHA gcr.io/$PROJECT_ID/currency-backend:latest
+          docker build -t gcr.io/$PROJECT_ID/currency-backend:$GITHUB_SHA ./be
+          docker tag gcr.io/$PROJECT_ID/currency-backend:$GITHUB_SHA gcr.io/$PROJECT_ID/currency-backend:latest
 
       - name: Push Backend Image
         run: |
@@ -48,8 +48,8 @@ jobs:
 
       - name: Build Frontend Image
         run: |
-          docker build -t gcr.io/$PROJECT_ID/f1-frontend:$GITHUB_SHA ./ui
-          docker tag gcr.io/$PROJECT_ID/f1-frontend:$GITHUB_SHA gcr.io/$PROJECT_ID/currency-frontend:latest
+          docker build -t gcr.io/$PROJECT_ID/currency-frontend:$GITHUB_SHA ./ui
+          docker tag gcr.io/$PROJECT_ID/currency-frontend:$GITHUB_SHA gcr.io/$PROJECT_ID/currency-frontend:latest
 
       - name: Push Frontend Image
         run: |
@@ -71,7 +71,7 @@ jobs:
 
       - name: Deploy with Helm
         run: |
-          helm upgrade --install f1-dashboard ./currency-app \
+          helm upgrade --install currency-dashboard ./currency-app \
             --set backend.image=gcr.io/$PROJECT_ID/currency-backend \
             --set backend.version=$GITHUB_SHA \
             --set frontend.image=gcr.io/$PROJECT_ID/currency-frontend \
