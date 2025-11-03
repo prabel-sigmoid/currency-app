@@ -20,6 +20,16 @@ spec:
           env:
             - name: DATABASE_URL
               value: "postgresql://{{ .Values.postgres.user }}:{{ .Values.postgres.password }}@db:{{ .Values.postgres.port }}/{{ .Values.postgres.dbName }}"
+            - name: DB_CONFIG_HOST
+              value: {{ .Values.backend.host }}
+            - name: DB_CONFIG_PORT
+              value: {{ .Values.postgres.port }}
+            - name: DB_CONFIG_USERNAME
+              value: {{ .Values.postgres.user }}
+            - name: DB_CONFIG_PASSWORD
+              value: {{ .Values.postgres.password }}
+            - name: DB_CONFIG_DATABASE
+              value: {{ .Values.postgres.dbName }}
 ---
 apiVersion: v1
 kind: Service

@@ -9,6 +9,8 @@ postgres:
 backend:
   image: prabel1/currency-be:latest
   port: 8000
+  host: db
+  
 
 frontend:
   image: prabel1/currency-front:latest
