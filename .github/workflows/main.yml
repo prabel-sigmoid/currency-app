@@ -1,0 +1,90 @@
+name: Deploy to GKE
+
+
+on:
+  push:
+    branches:
+      - main
+
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker
+
+
+      - name: Build Backend Image
+        run: |
+          docker build -t gcr.io/$PROJECT_ID/currency-backend:$GITHUB_SHA ./be
+          docker tag gcr.io/$PROJECT_ID/currency-backend:$GITHUB_SHA gcr.io/$PROJECT_ID/currency-backend:latest
+
+      - name: Push Backend Image
+        run: |
+          docker push gcr.io/$PROJECT_ID/currency-backend:$GITHUB_SHA
+          docker push gcr.io/$PROJECT_ID/currency-backend:latest
+
+      - name: Build Frontend Image
+        run: |
+          docker build -t gcr.io/$PROJECT_ID/currency-frontend:$GITHUB_SHA ./ui
+          docker tag gcr.io/$PROJECT_ID/currency-frontend:$GITHUB_SHA gcr.io/$PROJECT_ID/currency-frontend:latest
+
+      - name: Push Frontend Image
+        run: |
+          docker push gcr.io/$PROJECT_ID/currency-frontend:$GITHUB_SHA
+          docker push gcr.io/$PROJECT_ID/currency-frontend:latest
+
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.12.0'
+
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install currency-dashboard ./currency-app \
+            --set backend.image=gcr.io/$PROJECT_ID/currency-backend \
+            --set backend.version=$GITHUB_SHA \
+            --set frontend.image=gcr.io/$PROJECT_ID/currency-frontend \
+            --set frontend.version=$GITHUB_SHA \
+            --wait --timeout 5m
+
+      - name: Show Deployment Status
+        run: |
+          echo "=== SERVICES ==="
+          kubectl get services
+          echo ""
+          echo "=== PODS ==="
+          kubectl get pods
+          echo ""
+          echo "=== DEPLOYMENTS ==="
+          kubectl get deployment
