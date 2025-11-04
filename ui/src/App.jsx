@@ -290,18 +290,24 @@ export default function CurrencyAnalyzer() {
               Select Currencies ({selectedCurrencies.length} selected)
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-64 overflow-y-auto p-2 border rounded-lg">
-              {Object.entries(currencies).map(([code, name]) => (
-                <label key={code} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedCurrencies.includes(code)}
-                    onChange={() => handleCurrencyToggle(code)}
-                    className="w-4 h-4 text-indigo-600 rounded"
-                  />
-                  <span className="text-sm font-medium">{code}</span>
-                  <span className="text-xs text-gray-500 truncate">{name}</span>
-                </label>
-              ))}
+              {currencies && Object.keys(currencies).length > 0 ? (
+                Object.entries(currencies).map(([code, name]) => (
+                  <label key={code} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedCurrencies.includes(code)}
+                      onChange={() => handleCurrencyToggle(code)}
+                      className="w-4 h-4 text-indigo-600 rounded"
+                    />
+                    <span className="text-sm font-medium">{code}</span>
+                    <span className="text-xs text-gray-500 truncate">{name}</span>
+                  </label>
+                ))
+              ) : (
+                <div className="col-span-full text-center text-gray-500 py-4">
+                  Loading currencies...
+                </div>
+              )}
             </div>
           </div>
           )}
