@@ -23,7 +23,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: currency-backend
+                name: backend-service
                 port:
                   number: {{ .Values.backend.port }}
 
@@ -31,7 +31,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: currency-frontend
+                name: frontend-service
                 port:
                   number: {{ .Values.frontend.port }}
 
