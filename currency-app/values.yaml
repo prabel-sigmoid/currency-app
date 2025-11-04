@@ -19,4 +19,6 @@ frontend:
 
 ingress:
   enabled: true
-  host: currency.local
+  tls:
+    enabled: false
+    secretName: currency-tls
