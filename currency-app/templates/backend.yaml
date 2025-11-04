@@ -1,44 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: currency-backend
+  name: {{ .Release.Name }}-backend
+  labels:
+    app: {{ .Release.Name }}-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: currency-backend
+      app: {{ .Release.Name }}-backend
   template:
     metadata:
       labels:
-        app: currency-backend
+        app: {{ .Release.Name }}-backend
     spec:
       containers:
-        - name: currency-backend
-          image: {{ .Values.backend.image }}
+        - name: {{ .Release.Name }}-backend
+          image: "{{ .Values.backend.image }}"
           ports:
-            - containerPort: {{ .Values.backend.port }}
+            - containerPort: {{ .Values.backend.port | int }}
           env:
             - name: DATABASE_URL
-              value: "postgresql://{{ .Values.postgres.user }}:{{ .Values.postgres.password }}@db:{{ .Values.postgres.port }}/{{ .Values.postgres.dbName }}"
+              value: "postgresql://{{ .Values.postgres.user }}:{{ .Values.postgres.password }}@{{ .Values.backend.host }}:{{ .Values.postgres.port }}/{{ .Values.postgres.dbName }}"
             - name: DB_CONFIG_HOST
-              value: {{ .Values.backend.host }}
+              value: "{{ .Values.backend.host }}"
             - name: DB_CONFIG_PORT
-              value: {{ .Values.postgres.port }}
+              value: "{{ .Values.postgres.port }}"
             - name: DB_CONFIG_USERNAME
-              value: {{ .Values.postgres.user }}
+              value: "{{ .Values.postgres.user }}"
             - name: DB_CONFIG_PASSWORD
-              value: {{ .Values.postgres.password }}
+              value: "{{ .Values.postgres.password }}"
             - name: DB_CONFIG_DATABASE
-              value: {{ .Values.postgres.dbName }}
+              value: "{{ .Values.postgres.dbName }}"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: {{ .Release.Name }}-backend-service
+  labels:
+    app: {{ .Release.Name }}-backend
 spec:
   type: ClusterIP
   selector:
-    app: currency-backend
+    app: {{ .Release.Name }}-backend
   ports:
-    - port: {{ .Values.backend.port }}
-      targetPort: {{ .Values.backend.port }}
+    - port: {{ .Values.backend.port | int }}
+      targetPort: {{ .Values.backend.port | int }}
