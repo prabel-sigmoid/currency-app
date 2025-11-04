@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-ingress
+  name: currency-ingress
   labels:
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -23,7 +23,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-backend
+                name: currency-backend
                 port:
                   number: {{ .Values.backend.port }}
 
@@ -31,7 +31,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-frontend
+                name: currency-frontend
                 port:
                   number: {{ .Values.frontend.port }}
 

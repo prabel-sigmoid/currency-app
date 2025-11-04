@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-backend
+  name: currency-backend
   labels:
-    app: {{ .Release.Name }}-backend
+    app: currency-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-backend
+      app: currency-backend
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-backend
+        app: currency-backend
     spec:
       containers:
-        - name: {{ .Release.Name }}-backend
+        - name: currency-backend
           image: "{{ .Values.backend.image }}"
           ports:
             - containerPort: {{ .Values.backend.port | int }}
@@ -36,13 +36,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-backend-service
+  name: backend-service
   labels:
-    app: {{ .Release.Name }}-backend
+    app: currency-backend
 spec:
   type: ClusterIP
   selector:
-    app: {{ .Release.Name }}-backend
+    app: currency-backend
   ports:
     - port: {{ .Values.backend.port | int }}
       targetPort: {{ .Values.backend.port | int }}
