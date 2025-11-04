@@ -12,3 +12,4 @@ requests==2.31.0
 
 # Additional Dependencies
 python-multipart==0.0.6
+prometheus-fastapi-instrumentator==6.1.0
