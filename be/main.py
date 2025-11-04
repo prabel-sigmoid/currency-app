@@ -1,3 +1,4 @@
+import os
 from multiprocessing import process
 from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,11 +25,11 @@ app.add_middleware(
 
 # Database configuration
 DB_CONFIG = {
-    "host": process.env.DB_CONFIG_HOST,
-    "database": process.env.DB_CONFIG_DATABASE,
-    "user": process.env.DB_CONFIG_USERNAME,
-    "password": process.env.DB_CONFIG_PASSWORD,
-    "port": process.env.DB_CONFIG_PORT
+    "host": os.getenv("DB_CONFIG_HOST"),
+    "database": os.getenv("DB_CONFIG_DATABASE"),
+    "user": os.getenv("DB_CONFIG_USERNAME"),
+    "password": os.getenv("DB_CONFIG_PASSWORD"),
+    "port": os.getenv("DB_CONFIG_PORT")
 }
 
 @contextmanager
