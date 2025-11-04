@@ -267,7 +267,7 @@ def get_currencies():
         if response.status_code == 200:
             currencies = response.json()
             currencies.pop("USD", None)
-            # print(currencies)
+            print(currencies)
             return {"currencies": currencies}
         else:
             # Fallback list
