@@ -20,7 +20,7 @@ spec:
       http:
         paths:
           - path: /api(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: backend-service
@@ -28,7 +28,7 @@ spec:
                   number: {{ .Values.backend.port }}
 
           - path: /()(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: frontend-service
