@@ -20,19 +20,21 @@ spec:
       http:
         paths:
           - path: /api(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ .Release.Name }}-backend
                 port:
                   number: {{ .Values.backend.port }}
+
           - path: /()(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ .Release.Name }}-frontend
                 port:
                   number: {{ .Values.frontend.port }}
+
   {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
