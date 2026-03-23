@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Download, AlertCircle, CheckCircle, Loader, Upload, Database } from 'lucide-react';
 
 // Use window.location to determine API URL
-const API_BASE_URL = "/api"; 
+const API_BASE_URL = "http://localhost:8000"; 
 
 export default function CurrencyAnalyzer() {
   const [currencies, setCurrencies] = useState({});
