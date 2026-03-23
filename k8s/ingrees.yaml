@@ -11,7 +11,6 @@ spec:
     - host: currency.local
       http:
         paths:
-          # Backend API routes - match /api/* and rewrite to /*
           - path: /api(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
@@ -19,7 +18,6 @@ spec:
                 name: backend-service
                 port:
                   number: 8000
-          # Frontend routes - serve everything else
           - path: /()(.*)
             pathType: ImplementationSpecific
             backend:
